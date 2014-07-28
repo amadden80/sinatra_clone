@@ -6,11 +6,10 @@ require 'erb'
 
 beatles = ["john", "paul", "george", "ringo", "yoko"]
 
+thin = Rack::Handler::Thin
+app  = lambda { |env| [200, {"Content-Type" => "text/plain"}, [beatles]]}
 
-# thin = Rack::Handler::Thin
-# app  = lambda { |env| [200, {"Content-Type" => "text/plain"}, ["Hello WDI. The time is #{Time.now}"]] }
-# thin.run app
-
+thin.run app
 
 
 
@@ -23,7 +22,7 @@ class View
     @template = ERB.new(File.open(file_path).read)
   end
 
-  def render
+  def render(binding)
     rendered_html = @template.result(binding)
     # places results of rendered template in
     layout { rendered_html }
