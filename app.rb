@@ -1,6 +1,19 @@
 # Q: What is a Web Application?
 # A: A Web Site With procedurally generated content.
 
+# Q: How can I interact with application through brower
+# A: HTTP
+
+# Q: What is HTTP?
+# A: (INSERT GOOD ANSWER)
+
+# Q: (INSERT GOOD QUESTION)
+# A: (ABSTRACT VIEW CLASS)
+
+# Q: DO WE NEED TWO VIEWS FOR BEATLES AND STONES?
+# A: NO
+
+
 require 'rack'
 require 'erb'
 require 'pry'
@@ -39,11 +52,13 @@ class Application
   def call(env)
     case path = env["PATH_INFO"]
     when /beatles/
-      @beatles = BEATLES
-      [200, {"Content-Type" => "text/html"}, [View.new({view: 'beatles'}).render(binding)]]
+      @band = BEATLES
+      @name = "The Beatles"
+      [200, {"Content-Type" => "text/html"}, [View.new({view: 'band'}).render(binding)]]
     when /stones/
-      @stones = STONES
-      [200, {"Content-Type" => "text/html"}, [View.new({view: 'stones'}).render(binding)]]
+      @band = STONES
+      @name = "The Rolling Stones"
+      [200, {"Content-Type" => "text/html"}, [View.new({view: 'band'}).render(binding)]]
     else
       [404, {"Content-Type" => "text/html"}, ["<h1>404: NOT FOUND</h1>"]]
     end
