@@ -4,16 +4,6 @@
 require 'rack'
 require 'erb'
 
-beatles = ["john", "paul", "george", "ringo", "yoko"]
-
-thin = Rack::Handler::Thin
-app  = lambda { |env| [200, {"Content-Type" => "text/plain"}, [beatles]]}
-
-thin.run app
-
-
-
-
 
 class View
 
@@ -39,3 +29,13 @@ class View
   end
 
 end
+
+
+beatles = ["john", "paul", "george", "ringo", "yoko"]
+
+thin = Rack::Handler::Thin
+app  = lambda { |env| [200, {"Content-Type" => "text/plain"}, [View.new({view: 'index'}).render(binding)]]}
+
+
+thin.run app
+
