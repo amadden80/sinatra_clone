@@ -33,8 +33,12 @@ end
 
 beatles = ["john", "paul", "george", "ringo", "yoko"]
 
+stones  = ['mick', 'keith', 'ronnie', 'charlie']
+
 thin = Rack::Handler::Thin
-app  = lambda { |env| [200, {"Content-Type" => "text/plain"}, [View.new({view: 'index'}).render(binding)]]}
+
+# must change datatype to 'text/html, yo'
+app  = lambda { |env| [200, {"Content-Type" => "text/html"}, [View.new({view: 'beatles'}).render(binding)]]}
 
 
 thin.run app
