@@ -3,7 +3,7 @@
 
 require 'rack'
 require 'erb'
-
+require 'pry'
 
 class View
 
@@ -31,15 +31,25 @@ class View
 end
 
 
-beatles = ["john", "paul", "george", "ringo", "yoko"]
+class Application
 
-stones  = ['mick', 'keith', 'ronnie', 'charlie']
+  BEATLES = ["john", "paul", "george", "ringo", "yoko"]
+  STONES  = ['mick', 'keith', 'ronnie', 'charlie']
+
+  def call(env)
+    case path = env["PATH_INFO"]
+    when /beatles/
+      @beatles = BEATLES
+      [200, {"Content-Type" => "text/html"}, [View.new({view: 'beatles'}).render(binding)]]
+    when /stones/
+      @stones = STONES
+      [200, {"Content-Type" => "text/html"}, [View.new({view: 'stones'}).render(binding)]]
+    else
+      [404, {"Content-Type" => "text/html"}, ["<h1>404: NOT FOUND</h1>"]]
+    end
+  end
+end
 
 thin = Rack::Handler::Thin
-
-# must change datatype to 'text/html, yo'
-app  = lambda { |env| [200, {"Content-Type" => "text/html"}, [View.new({view: 'beatles'}).render(binding)]]}
-
-
-thin.run app
+thin.run Application.new
 
