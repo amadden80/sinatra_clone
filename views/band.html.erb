@@ -5,3 +5,8 @@
   <li><%= member %></li>
 <% end %>
 </ul>
+
+<form action="/<%= @name %>" method="post">
+  <input name= "member" type="text">
+  <input type="submit">
+</form>
