@@ -8,7 +8,7 @@ class View
   def render(binding)
     process_instance_variables(binding)
     rendered_html = @template.result(binding)
-    layout{ rendered_html }
+    layout{rendered_html }
   end
 
   private
