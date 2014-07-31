@@ -12,8 +12,20 @@ module PassiveRecord
     end
 
     def save
-      data = @@connection.execute("INSERT INTO #{self.class.table_name} (#{@attributes.keys.map(&:to_s).join(", ")}) VALUES (#{@attributes.values.map{|x| x.is_a?(String) ? "'#{x}'" : x }.join(", ")}) RETURNING *") #could refactor is psql allows
+      data = @@connection.execute("INSERT INTO #{self.class.table_name} (#{attributes_to_sql}) VALUES (#{values_to_sql}) RETURNING *") #could refactor is psql allows
       @attributes = data[0]
+      self
+    end
+
+    def update(attributes)
+      attrs = @attributes.merge(attributes)
+      data = @@connection.execute("UPDATE #{self.class.table_name} SET (#{attributes_to_sql}) = (#{values_to_sql(attrs)}) WHERE id=#{self.id} RETURNING *")
+      @attributes = data[0]
+      self
+    end
+
+    def delete
+      @@connection.execute("DELETE FROM #{self.class.table_name} WHERE id=#{self.id};")
       self
     end
 
@@ -21,6 +33,7 @@ module PassiveRecord
       return @attributes[args[0]] if @attributes[args[0]] #returns attributes
       super
     end
+
 
     def self.create(attributes={})
       self.new(attributes).save
@@ -45,6 +58,21 @@ module PassiveRecord
       arr.map{ |hash| self.new(hash)}
     end
 
+    private
+
+    def attributes_to_sql
+      exclude_immutables(@attributes.clone).keys.map(&:to_s).join(", ")
+    end
+
+    def values_to_sql(attributes = nil)
+      attributes = @attributes unless attributes
+      attributes = exclude_immutables(attributes.clone).values.map{|x| x.is_a?(String) ? "'#{x}'" : x }.join(", ")
+    end
+
+    def exclude_immutables(attributes)
+      immutables = [ :created_at, :id ]
+      attributes.keep_if{ |k,v| !immutables.include? k }
+    end
   end
 
   class UnknownAttributeError < NoMethodError
