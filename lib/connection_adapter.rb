@@ -8,7 +8,7 @@ class PostgresAdapter
   end
 
   def execute(sql)
-    @db.exec(sql).map do |row|
+    data = @db.exec(sql).map do |row|
       row.each_with_object({}){|(k,v), hash| hash[k.to_sym] = v} # symbolize keys
     end
   end

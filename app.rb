@@ -3,9 +3,8 @@ require 'pry'
 
 class HelloWorld < Application
   get '/' do
-    @title   = "Sorry miss jackson..."
-    @content = "I am for real."
-    [200, {"Content-Type" => "text/html"}, [View.new({view: 'index'}).render(binding)]]
+    @content = "Sup, Coredogg?"
+    render :hello
   end
 end
 
