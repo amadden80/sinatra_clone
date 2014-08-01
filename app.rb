@@ -3,8 +3,18 @@ require 'pry'
 
 class HelloWorld < Application
   get '/' do
-    @content = "Sup, Coredogg?"
-    render :hello
+    @instructors = Instructor.all
+    render :index
+  end
+
+  post '/instructors' do
+    Instructor.create(params)
+    redirect '/'
+  end
+
+  delete '/instructors/:id' do
+    Instructor.delete(params[:id])
+    redirect '/'
   end
 end
 

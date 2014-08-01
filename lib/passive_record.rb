@@ -24,19 +24,19 @@ module PassiveRecord
       self
     end
 
-    def delete
-      @@connection.execute("DELETE FROM #{self.class.table_name} WHERE id=#{self.id};")
-      self
-    end
-
     def method_missing(*args)
-      return @attributes[args[0]] if @attributes[args[0]] #returns attributes
+      return @attributes[args[0]].to_i if !@attributes[args[0]].to_i.zero? #returns integer if it can be parsed into int
+      return @attributes[args[0]] if @attributes[args[0]]
       super
     end
 
 
     def self.create(attributes={})
       self.new(attributes).save
+    end
+
+    def self.delete(id)
+      @@connection.execute("DELETE FROM #{self.table_name} WHERE id=#{id};")
     end
 
     def self.all
@@ -90,9 +90,6 @@ module PassiveRecord
   end
 end
 
-class Instructor < PassiveRecord::Base
-
-end
 
 
 

@@ -1,0 +1,19 @@
+<ul>
+  <% @instructors.each do |instructor| %>
+    <li>name: <%= instructor.name %> | sign: <%= instructor.sign %>
+      <form action="/instructors/<%= instructor.id %>" method="post">
+        <div style="margin:0;padding:0">
+          <input name="_method" type="hidden" value="delete" />
+        </div>
+        <input type="submit" value="delete">
+      </form>
+    </li>
+  <% end %>
+</ul>
+
+<form action="/instructors" method="post">
+  <p>Name:<input name="name" type="text"></p>
+  <p>Sign:<input name="sign" type="text"></p>
+  <p><input type="submit"></p>
+</form>
+

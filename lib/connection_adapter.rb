@@ -1,5 +1,4 @@
 # Inspired by this code: https://github.com/owningrails/patterns/blob/master/lib/connection_adapter.rb
-
 class PostgresAdapter
 
   def initialize
