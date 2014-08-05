@@ -16,11 +16,8 @@ class HelloWorld < Application
     Instructor.delete(params[:id])
     redirect '/'
   end
+
 end
-
-thin = Rack::Handler::Thin
-thin.run HelloWorld.new
-
 
 
 

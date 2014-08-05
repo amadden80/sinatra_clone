@@ -50,6 +50,14 @@ module PassiveRecord
       self.objectify(data)[0]
     end
 
+    def self.first
+      self.all.first
+    end
+
+    def self.last
+      self.all.last
+    end
+
     def self.table_name
       self.name.downcase+"s"
     end
@@ -89,8 +97,3 @@ module PassiveRecord
     end
   end
 end
-
-
-
-
-
