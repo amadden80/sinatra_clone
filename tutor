@@ -1,5 +1,0 @@
-I am writing some text i wish to append some text.
-
-def ruby(love)
-    puts love
-end
